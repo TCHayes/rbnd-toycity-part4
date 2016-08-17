@@ -6,13 +6,14 @@ class Udacidata
 
 @@data_path = "../data/data.csv"
 
-  def self.create(opts={}) #This needs to be rewritten with modularity in mind. (Customer and Transaction classes will also inherit)
-    new_product = Product.new(brand: opts[:brand], name: opts[:name], price: opts[:price])
+  def self.create(**opts)
+    new_item = self.new(**opts)
     #Still need to check if id already in database before adding...
     CSV.open(@@data_path, "a+") do |csv|
-      csv << [new_product.id, opts[:brand], opts[:name], opts[:price]]
+      #Might need to alter line below for use w different Classes (beyond Products)
+      csv << [new_item.id, new_item.brand, new_item.name, new_item.price]
     end
-    new_product
+    new_item
   end
   
   def self.all
@@ -21,7 +22,6 @@ class Udacidata
     data_array.drop(1).each do |row|
       @products << self.create(id: row[0], brand: row[1], name: row[2], price: row[3])
     end
-    #@products.each {|product| puts product.id} #For testing to see IDs
     @products
   end
 
