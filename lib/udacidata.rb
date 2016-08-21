@@ -57,6 +57,24 @@ class Udacidata
     self.new(id: deleted_row[0], brand: deleted_row[1], name: deleted_row[2], price: deleted_row[3])
   end
 
+  def self.where(**opts)
+    results = []
+    if opts[:brand]
+      results = self.all.select{ |product| product.brand == opts[:brand]}
+    elsif opts[:name]
+      results = self.all.select{ |product| product.name == opts[:name]}
+    else
+      #THROW ERROR
+    end
+    results
+  end
+
+  def update(**opts)
+    @brand = opts[:brand] if opts[:brand]
+    @price = opts[:price] if opts[:price]
+    self
+  end
+
   self.create_finder_methods('brand', 'name')
 
 end
