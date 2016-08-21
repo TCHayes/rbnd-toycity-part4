@@ -56,4 +56,7 @@ class Udacidata
     end
     self.new(id: deleted_row[0], brand: deleted_row[1], name: deleted_row[2], price: deleted_row[3])
   end
+
+  self.create_finder_methods('brand', 'name')
+
 end
