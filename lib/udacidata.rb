@@ -9,7 +9,7 @@ class Udacidata
   def self.create(**opts)
     new_item = self.new(**opts)
     # Still need to check if id already in database before adding...
-    CSV.open(@@data_path, "a+") do |csv|
+    CSV::open(@@data_path, "a+") do |csv|
       # Ideally would alter this for use w/ Transaction and Customer classes:
       csv << [new_item.id, new_item.brand, new_item.name, new_item.price]
     end
@@ -40,5 +40,20 @@ class Udacidata
     else
       self.all.last(amount)
     end
+  end
+
+  def self.find(id)
+    self.all.each.find { |product| product.id == id}
+  end
+
+  def self.destroy(id)
+    data_array = CSV::read(@@data_path)
+    deleted_row = data_array.delete_at(data_array.index { |row| row.first == id.to_s })
+    CSV::open(@@data_path, "w+") do |csv|
+      data_array.each do |row|
+        csv << row
+      end
+    end
+    self.new(id: deleted_row[0], brand: deleted_row[1], name: deleted_row[2], price: deleted_row[3])
   end
 end
