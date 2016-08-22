@@ -72,7 +72,9 @@ class Udacidata
   def update(**opts)
     @brand = opts[:brand] if opts[:brand]
     @price = opts[:price] if opts[:price]
-    self
+    @name = opts[:name] if opts[:name]
+    Product.destroy(@id)
+    Product.create(id: @id, brand: @brand, name: @name, price: @price)
   end
 
   self.create_finder_methods('brand', 'name')
