@@ -21,7 +21,7 @@ class Udacidata
     data_array = CSV.read(@@data_path)
     data_array.drop(1).each do |row|
       # Another modularity conflict:
-      products << self.create(id: row[0], brand: row[1], name: row[2], price: row[3])
+      products << self.new(id: row[0], brand: row[1], name: row[2], price: row[3])
     end
     products
   end
