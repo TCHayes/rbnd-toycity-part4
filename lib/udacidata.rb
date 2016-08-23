@@ -4,12 +4,11 @@ require 'csv'
 
 class Udacidata
 
-@@data_path = "../data/data.csv"
-
   def self.create(**opts)
+    @data_path = File.dirname(__FILE__) + "/../data/data.csv"
     new_item = self.new(**opts)
     # Should add check to see if ID already in database before adding...
-    CSV::open(@@data_path, "a+") do |csv|
+    CSV::open(@data_path, "a+") do |csv|
       # Ideally would alter this for use w/ Transaction and Customer classes:
       csv << [new_item.id, new_item.brand, new_item.name, new_item.price]
     end
@@ -17,8 +16,9 @@ class Udacidata
   end
   
   def self.all
+    @data_path = File.dirname(__FILE__) + "/../data/data.csv"
     products = []
-    data_array = CSV.read(@@data_path)
+    data_array = CSV.read(@data_path)
     data_array.drop(1).each do |row|
       # Another modularity conflict:
       products << self.new(id: row[0], brand: row[1], name: row[2], price: row[3])
@@ -52,12 +52,13 @@ class Udacidata
   end
 
   def self.destroy(id)
-    data_array = CSV::read(@@data_path)
+    @data_path = File.dirname(__FILE__) + "/../data/data.csv"
+    data_array = CSV::read(@data_path)
     if data_array.index { |row| row.first == id.to_s } == nil
       raise ProductNotFoundError.new
     else
     deleted_row = data_array.delete_at(data_array.index { |row| row.first == id.to_s })
-    CSV::open(@@data_path, "w+") do |csv|
+    CSV::open(@data_path, "w+") do |csv|
       data_array.each do |row|
         csv << row
       end
