@@ -7,10 +7,11 @@ class Udacidata
   def self.create(**opts)
     @data_path = File.dirname(__FILE__) + "/../data/data.csv"
     new_item = self.new(**opts)
-    # Should add check to see if ID already in database before adding...
-    CSV::open(@data_path, "a+") do |csv|
-      # Ideally would alter this for use w/ Transaction and Customer classes:
-      csv << [new_item.id, new_item.brand, new_item.name, new_item.price]
+    unless id_exists?(opts[:id])
+      CSV::open(@data_path, "a+") do |csv|
+        # Ideally would alter this for use w/ Transaction and Customer classes:
+        csv << [new_item.id, new_item.brand, new_item.name, new_item.price]
+      end
     end
     new_item
   end
@@ -85,6 +86,16 @@ class Udacidata
     @name = opts[:name] if opts[:name]
     Product.destroy(@id)
     Product.create(id: @id, brand: @brand, name: @name, price: @price)
+  end
+
+  def self.id_exists?(id)
+    @data_path = File.dirname(__FILE__) + "/../data/data.csv"
+    data_array = CSV::read(@data_path)
+    if data_array.any? { |row| row.first == id.to_s }
+      true
+    else
+      false
+    end
   end
 
   self.create_finder_methods('brand', 'name')
