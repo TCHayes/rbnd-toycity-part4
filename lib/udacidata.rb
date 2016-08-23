@@ -75,7 +75,7 @@ class Udacidata
     elsif opts[:name]
       results = self.all.select{ |product| product.name == opts[:name]}
     else
-      raise UserInputError.new, "Where method only supports selecting by brand or name."
+      raise UserInputError.new, "the 'where' method only supports selecting by brand or name."
     end
     results
   end
@@ -91,11 +91,7 @@ class Udacidata
   def self.id_exists?(id)
     @data_path = File.dirname(__FILE__) + "/../data/data.csv"
     data_array = CSV::read(@data_path)
-    if data_array.any? { |row| row.first == id.to_s }
-      true
-    else
-      false
-    end
+    data_array.any? { |row| row.first == id.to_s } ? true : false
   end
 
   self.create_finder_methods('brand', 'name')

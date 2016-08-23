@@ -1,5 +1,4 @@
 module Analyzable
-  # Your code goes here!
   def average_price(products)
   	sum = 0.00
   	products.each do |product|
@@ -30,13 +29,13 @@ module Analyzable
   	report << "Average Price: $#{average_price(products)}\n"
   	report << "\n"
   	report << "Inventory by Brand:\n"
-  	# Brand Info
+  	# Add Brand Info
   	count_by_brand(products).each do |key, value|
   		report << "    - #{key}: #{value}\n"
   	end
   	report << "\n"
   	report << "Inventory by Name:\n"
-  	# Name Info
+  	# Add Name Info
   	count_by_name(products).each do |key, value|
   		report << "    - #{key.capitalize}: #{value}\n"
   	end
