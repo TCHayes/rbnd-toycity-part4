@@ -73,7 +73,7 @@ class Udacidata
     elsif opts[:name]
       results = self.all.select{ |product| product.name == opts[:name]}
     else
-      #THROW ERROR
+      raise UserInputError.new, "Where method only supports selecting by brand or name."
     end
     results
   end
